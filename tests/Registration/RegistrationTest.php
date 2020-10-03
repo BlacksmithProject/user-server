@@ -17,9 +17,9 @@ class RegistrationTest extends TestCase
 {
     private const UUID = '31825114-cfa6-4fc9-ac7f-08d257bb1325';
 
-    /** @var UserRepository|MockObject */
+    /** @var UserRepository&MockObject */
     private $repository;
-    /** @var UserProvider|MockObject */
+    /** @var UserProvider&MockObject */
     private $provider;
     private Registration $service;
 
@@ -48,7 +48,7 @@ class RegistrationTest extends TestCase
         $this->provider
             ->expects($this->once())
             ->method('byUuid')
-            ->willReturn(new User(self::UUID, 'john.doe@example.com', 'greatPassword', 'activation-code'));
+            ->willReturn(new User(self::UUID, 'john.doe@example.com', 'activation-code'));
 
         // WHEN
         $output = ($this->service)($input);

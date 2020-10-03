@@ -7,10 +7,9 @@ class User implements \JsonSerializable
 {
     private string $uuid;
     private string $email;
-    private string $password;
     private string $activationCode;
 
-    public function __construct(string $uuid, string $email, string $password, string $activationCode)
+    public function __construct(string $uuid, string $email, string $activationCode)
     {
         $this->uuid = $uuid;
         $this->email = $email;
