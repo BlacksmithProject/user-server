@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Registration;
 
+use App\Registration\Exception\EmailIsAlreadyUsed;
 use App\Registration\Exception\UserCouldNotBeFound;
 use App\Registration\IO\Input;
+use App\Registration\Port\ActivationCodeGenerator;
 use App\Registration\Port\UserProvider;
 use App\Registration\Port\UserRepository;
+use App\Registration\ReadModel\ActivationCode;
 use App\Registration\ReadModel\User;
 use App\Registration\Registration;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -21,13 +24,16 @@ class RegistrationTest extends TestCase
     private $repository;
     /** @var UserProvider&MockObject */
     private $provider;
+    /** @var ActivationCodeGenerator&MockObject */
+    private $activationCodeGenerator;
     private Registration $service;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(UserRepository::class);
         $this->provider = $this->createMock(UserProvider::class);
-        $this->service = new Registration($this->repository, $this->provider);
+        $this->activationCodeGenerator = $this->createMock(ActivationCodeGenerator::class);
+        $this->service = new Registration($this->provider, $this->repository, $this->activationCodeGenerator);
     }
 
     public function test user can be registered when valid email and password are provided(): void
@@ -48,7 +54,11 @@ class RegistrationTest extends TestCase
         $this->provider
             ->expects($this->once())
             ->method('byUuid')
-            ->willReturn(new User(self::UUID, 'john.doe@example.com', 'activation-code'));
+            ->willReturn(new User(self::UUID, 'john.doe@example.com'));
+        $this->activationCodeGenerator
+            ->expects($this->once())
+            ->method('generateForUser')
+            ->willReturn(new ActivationCode('activation-code'));
 
         // WHEN
         $output = ($this->service)($input);
@@ -65,6 +75,9 @@ class RegistrationTest extends TestCase
 
     public function test user cannot be registered with an already used email(): void
     {
+        // EXPECT
+        self::expectException(EmailIsAlreadyUsed::class);
+
         // GIVEN
         $input = new Input('john.doe@example.com', 'greatPassword');
         $this->provider
@@ -73,12 +86,7 @@ class RegistrationTest extends TestCase
             ->willReturn(true);
 
         // WHEN
-        $output = ($this->service)($input);
-
-        // THEN
-        self::assertSame([
-            'error' => 'email is already used',
-        ], $output->jsonSerialize());
+        ($this->service)($input);
     }
 
     public function test that an exception is thrown if user cannot be found after registration(): void

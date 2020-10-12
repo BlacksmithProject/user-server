@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Registration\IO;
 
+use App\Registration\ReadModel\ActivationCode;
 use App\Registration\ReadModel\User;
 
 class Output implements \JsonSerializable
@@ -14,15 +15,11 @@ class Output implements \JsonSerializable
         $this->data = $data;
     }
 
-    public static function fromUser(User $user): self
-    {
-        return new self($user->jsonSerialize());
-    }
-
-    public static function fromMessage(string $message): self
+    public static function fromUserAndActivationCode(User $user, ActivationCode $activationCode): self
     {
         return new self([
-            'error' => $message,
+            'user' => $user->jsonSerialize(),
+            'activationCode' => $activationCode->jsonSerialize(),
         ]);
     }
 
