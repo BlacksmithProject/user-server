@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registration\Port;
 
 use App\Registration\Exception\UserCouldNotBeFound;

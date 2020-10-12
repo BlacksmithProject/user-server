@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Registration\IO;
@@ -6,7 +7,7 @@ namespace App\Registration\IO;
 use App\Registration\ReadModel\ActivationCode;
 use App\Registration\ReadModel\User;
 
-class Output implements \JsonSerializable
+final class Output implements \JsonSerializable
 {
     private array $data;
 
@@ -15,15 +16,17 @@ class Output implements \JsonSerializable
         $this->data = $data;
     }
 
-    public static function fromUserAndActivationCode(User $user, ActivationCode $activationCode): self
-    {
+    public static function fromUserAndActivationCode(
+        User $user,
+        ActivationCode $activationCode
+    ): self {
         return new self([
             'user' => $user->jsonSerialize(),
             'activationCode' => $activationCode->jsonSerialize(),
         ]);
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->data;
     }

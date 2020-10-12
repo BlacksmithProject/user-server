@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Registration\Model;
@@ -7,7 +8,7 @@ use App\Registration\Exception\EmailIsNotValid;
 use App\Registration\Exception\PasswordIsTooShort;
 use Symfony\Component\Uid\Uuid;
 
-class User
+final class User
 {
     private Uuid $uuid;
     private string $email;
@@ -19,7 +20,7 @@ class User
      */
     public function __construct(Uuid $uuid, string $email, string $password)
     {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
             throw new EmailIsNotValid();
         }
         if (strlen($password) < 6) {

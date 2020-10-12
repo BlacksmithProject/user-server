@@ -1,16 +1,17 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Registration;
 
 use App\Registration\IO\Input;
 use App\Registration\IO\Output;
+use App\Registration\Model\User;
 use App\Registration\Port\ActivationCodeGenerator;
 use App\Registration\Port\UserProvider;
 use App\Registration\Port\UserRepository;
-use App\Registration\Model\User;
 
-class Registration
+final class Registration
 {
     private UserProvider $provider;
     private UserRepository $repository;
@@ -44,12 +45,13 @@ class Registration
 
         try {
             $readUser = $this->provider->byUuid($uuid);
-        } catch (Exception\UserCouldNotBeFound $e) {
-            throw new \RuntimeException('User could not be found right after being registered');
+        } catch (Exception\UserCouldNotBeFound $exception) {
+            $message = 'User could not be found right after being registered';
+            throw new \RuntimeException($message);
         }
 
-        $activationCode = $this->activationCodeGenerator->generateForUser($uuid);
+        $code = $this->activationCodeGenerator->generateForUser($uuid);
 
-        return Output::fromUserAndActivationCode($readUser, $activationCode);
+        return Output::fromUserAndActivationCode($readUser, $code);
     }
 }

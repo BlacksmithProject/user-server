@@ -1,9 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Registration\ReadModel;
 
-class ActivationCode implements \JsonSerializable
+final class ActivationCode implements \JsonSerializable
 {
     private string $token;
 
@@ -12,7 +13,7 @@ class ActivationCode implements \JsonSerializable
         $this->token = $token;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): string
     {
         return $this->token;
     }

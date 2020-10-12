@@ -9,7 +9,7 @@ use App\Registration\Model\User;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Uuid;
 
-class UserTest extends TestCase
+final class UserTest extends TestCase
 {
     private const UUID = '31825114-cfa6-4fc9-ac7f-08d257bb1325';
 
