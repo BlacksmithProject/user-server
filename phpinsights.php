@@ -13,7 +13,7 @@ return [
     | to make your code reliable, simple, and clean. However, you can always
     | adjust the `Metrics` and `Insights` below in this configuration file.
     |
-    | Supported: "default", "laravel", "symfony", "magento2", "drupal"
+    | Supported: 'default', 'laravel', 'symfony', 'magento2', 'drupal'
     |
     */
 
@@ -27,8 +27,8 @@ return [
     | This options allow to add hyperlinks in your terminal to quickly open
     | files in your favorite IDE while browsing your PhpInsights report.
     |
-    | Supported: "textmate", "macvim", "emacs", "sublime", "phpstorm",
-    | "atom", "vscode".
+    | Supported: 'textmate', 'macvim', 'emacs', 'sublime', 'phpstorm',
+    | 'atom', 'vscode'.
     |
     | If you have another IDE that is not in this list but which provide an
     | url-handler, you could fill this config with a pattern like this:
@@ -51,7 +51,11 @@ return [
     */
 
     'exclude' => [
-        //  'path/to/directory-or-file'
+        'bin/',
+        'config/',
+        'public/',
+        'src/Kernel.php',
+        'var/',
     ],
 
     'add' => [
