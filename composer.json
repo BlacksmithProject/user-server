@@ -3,6 +3,43 @@
     "description": "UserServer handling email/password users",
     "type": "project",
     "license": "MIT",
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "replace": {
+        "paragonie/random_compat": "2.*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php56": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "5.1.*"
+        }
+    },
     "authors": [
         {
             "name": "Nicolas Gomes de Oliveira",
@@ -20,13 +57,21 @@
         }
     },
     "require": {
+        "ext-ctype": "*",
+        "ext-iconv": "*",
         "ext-json": "*",
-        "symfony/uid": "^5.1"
+        "php": ">=7.2.5",
+        "symfony/console": "5.1.*",
+        "symfony/dotenv": "5.1.*",
+        "symfony/flex": "^1.3.1",
+        "symfony/framework-bundle": "5.1.*",
+        "symfony/uid": "^5.1",
+        "symfony/yaml": "5.1.*"
     },
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "^3.11",
         "phpstan/phpstan": "^0.12.44",
-        "phpunit/phpunit": "^8.5",
+        "phpunit/phpunit": "^9.4",
         "squizlabs/php_codesniffer": "^3.5",
         "infection/infection": "^0.17",
         "nunomaduro/phpinsights": "^1.14"
