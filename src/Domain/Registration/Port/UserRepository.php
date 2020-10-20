@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Registration\Port;
+namespace App\Domain\Registration\Port;
 
-use App\Registration\Model\User;
+use App\Domain\Registration\Model\User;
 use Symfony\Component\Uid\Uuid;
 
 interface UserRepository
