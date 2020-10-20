@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Registration\Port;
+namespace App\Domain\Registration\Port;
 
-use App\Registration\Exception\UserCouldNotBeFound;
-use App\Registration\ReadModel\User;
+use App\Domain\Registration\Exception\UserCouldNotBeFound;
+use App\Domain\Registration\ReadModel\User;
 use Symfony\Component\Uid\Uuid;
 
 interface UserProvider

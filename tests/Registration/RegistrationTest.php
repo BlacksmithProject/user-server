@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace App\Tests\Registration;
 
-use App\Registration\Exception\EmailIsAlreadyUsed;
-use App\Registration\Exception\UserCouldNotBeFound;
-use App\Registration\IO\Input;
-use App\Registration\Port\ActivationCodeGenerator;
-use App\Registration\Port\UserProvider;
-use App\Registration\Port\UserRepository;
-use App\Registration\ReadModel\ActivationCode;
-use App\Registration\ReadModel\User;
-use App\Registration\Registration;
+use App\Domain\Registration\Exception\EmailIsAlreadyUsed;
+use App\Domain\Registration\Exception\UserCouldNotBeFound;
+use App\Domain\Registration\IO\Input;
+use App\Domain\Registration\Port\ActivationCodeGenerator;
+use App\Domain\Registration\Port\UserProvider;
+use App\Domain\Registration\Port\UserRepository;
+use App\Domain\Registration\ReadModel\ActivationCode;
+use App\Domain\Registration\ReadModel\User;
+use App\Domain\Registration\Registration;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Uuid;
@@ -48,27 +48,25 @@ final class RegistrationTest extends TestCase
             ->expects($this->once())
             ->method('nextId')
             ->willReturn(Uuid::fromString(self::UUID));
+        $this->activationCodeGenerator
+            ->expects($this->once())
+            ->method('generate')
+            ->willReturn('activation-code');
         $this->repository
             ->expects($this->once())
             ->method('save');
         $this->provider
             ->expects($this->once())
             ->method('byUuid')
-            ->willReturn(new User(self::UUID, 'john.doe@example.com'));
-        $this->activationCodeGenerator
-            ->expects($this->once())
-            ->method('generateForUser')
-            ->willReturn(new ActivationCode('activation-code'));
+            ->willReturn(new User(self::UUID, 'john.doe@example.com', 'activation-code'));
 
         // WHEN
         $output = ($this->service)($input);
 
         // THEN
         self::assertSame([
-            'user' => [
-                'uuid' => self::UUID,
-                'email' => 'john.doe@example.com',
-            ],
+            'uuid' => self::UUID,
+            'email' => 'john.doe@example.com',
             'activationCode' => 'activation-code',
         ], $output->jsonSerialize());
     }

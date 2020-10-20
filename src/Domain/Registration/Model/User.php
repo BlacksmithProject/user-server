@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Registration\Model;
+namespace App\Domain\Registration\Model;
 
-use App\Registration\Exception\EmailIsNotValid;
-use App\Registration\Exception\PasswordIsTooShort;
+use App\Domain\Registration\Exception\EmailIsNotValid;
+use App\Domain\Registration\Exception\PasswordIsTooShort;
+use App\Domain\Registration\ValueObject\ActivationCode;
 use Symfony\Component\Uid\Uuid;
 
 final class User
@@ -13,19 +14,26 @@ final class User
     private Uuid $uuid;
     private string $email;
     private string $password;
+    private ActivationCode $activationCode;
 
     /**
      * @throws EmailIsNotValid
      * @throws PasswordIsTooShort
      */
-    public function __construct(Uuid $uuid, string $email, string $password)
-    {
+    public function __construct(
+        Uuid $uuid,
+        ActivationCode $activationCode,
+        string $email,
+        string $password
+    ) {
         if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
             throw new EmailIsNotValid();
         }
+
         if (strlen($password) < 6) {
             throw new PasswordIsTooShort();
         }
+
         $password = \password_hash($password, PASSWORD_ARGON2I);
 
         if (\is_string($password) === false) {
@@ -33,6 +41,7 @@ final class User
         }
 
         $this->uuid = $uuid;
+        $this->activationCode = $activationCode;
         $this->email = $email;
         $this->password = $password;
     }
@@ -41,6 +50,7 @@ final class User
     {
         return [
             'uuid' => $this->uuid->jsonSerialize(),
+            'activationCode' => $this->activationCode,
             'email' => $this->email,
             'password' => $this->password,
         ];

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Registration\IO;
+namespace App\Domain\Registration\IO;
 
 final class Input
 {

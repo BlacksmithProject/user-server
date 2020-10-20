@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Registration;
+namespace App\Domain\Registration;
 
-use App\Registration\IO\Input;
-use App\Registration\IO\Output;
-use App\Registration\Model\User;
-use App\Registration\Port\ActivationCodeGenerator;
-use App\Registration\Port\UserProvider;
-use App\Registration\Port\UserRepository;
+use App\Domain\Registration\IO\Input;
+use App\Domain\Registration\IO\Output;
+use App\Domain\Registration\Model\User;
+use App\Domain\Registration\Port\ActivationCodeGenerator;
+use App\Domain\Registration\Port\UserProvider;
+use App\Domain\Registration\Port\UserRepository;
+use App\Domain\Registration\ValueObject\ActivationCode;
 
 final class Registration
 {
@@ -39,8 +40,9 @@ final class Registration
         }
 
         $uuid = $this->repository->nextId();
+        $code = $this->activationCodeGenerator->generate();
 
-        $user = new User($uuid, $input->getEmail(), $input->getPassword());
+        $user = new User($uuid, new ActivationCode($code), $input->getEmail(), $input->getPassword());
         $this->repository->save($user);
 
         try {
@@ -50,8 +52,6 @@ final class Registration
             throw new \RuntimeException($message);
         }
 
-        $code = $this->activationCodeGenerator->generateForUser($uuid);
-
-        return Output::fromUserAndActivationCode($readUser, $code);
+        return Output::fromUser($readUser);
     }
 }

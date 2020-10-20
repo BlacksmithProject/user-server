@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Registration\Model;
 
-use App\Registration\Exception\EmailIsNotValid;
-use App\Registration\Exception\PasswordIsTooShort;
-use App\Registration\Model\User;
+use App\Domain\Registration\Exception\EmailIsNotValid;
+use App\Domain\Registration\Exception\PasswordIsTooShort;
+use App\Domain\Registration\Model\User;
+use App\Domain\Registration\ValueObject\ActivationCode;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Uuid;
 
@@ -16,7 +17,7 @@ final class UserTest extends TestCase
     public function test user can expose its data for persistence(): void
     {
         // GIVEN
-        $user = new User(Uuid::fromString(self::UUID), 'john.doe@example.com', 'secret');
+        $user = new User(Uuid::fromString(self::UUID), new ActivationCode('fake-code'), 'john.doe@example.com', 'secret');
 
         // WHEN
         $array = $user->toArray();
@@ -34,7 +35,7 @@ final class UserTest extends TestCase
         self::expectException(EmailIsNotValid::class);
 
         // GIVEN
-        new User(Uuid::fromString(self::UUID), 'invalid-email', 'greatPassword');
+        new User(Uuid::fromString(self::UUID), new ActivationCode('fake-code'), 'invalid-email', 'greatPassword');
     }
 
     public function test that password must be at least 6 characters long(): void
@@ -43,6 +44,6 @@ final class UserTest extends TestCase
         self::expectException(PasswordIsTooShort::class);
 
         // GIVEN
-        new User(Uuid::fromString(self::UUID), 'john.doe@example.com', 'short');
+        new User(Uuid::fromString(self::UUID), new ActivationCode('fake-code'), 'john.doe@example.com', 'short');
     }
 }
