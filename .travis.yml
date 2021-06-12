@@ -5,7 +5,7 @@ notifications:
     on_success: never
 
 php:
-  - '7.4'
+  - '8.0'
 
 before_script:
   - make dev-from-scratch
