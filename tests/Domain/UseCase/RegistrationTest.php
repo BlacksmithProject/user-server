@@ -7,9 +7,9 @@ use App\Domain\Exception\CannotRegisterUser;
 use App\Domain\Exception\ServiceIsNotAccessible;
 use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\PlainPassword;
-use App\Tests\Domain\Adapter\Fake\FakeIdentifierGenerator;
-use App\Tests\Domain\Adapter\Fake\FakeUserProvider;
-use App\Tests\Domain\Adapter\Fake\FakeUserRepository;
+use App\Tests\Infrastructure\Adapter\Fake\FakeIdentifierGenerator;
+use App\Tests\Infrastructure\Adapter\Fake\FakeUserProvider;
+use App\Tests\Infrastructure\Adapter\Fake\FakeUserRepository;
 use App\UseCase\Registration;
 use PHPUnit\Framework\TestCase;
 

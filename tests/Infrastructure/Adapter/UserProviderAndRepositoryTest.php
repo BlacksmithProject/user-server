@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\Domain\Adapter;
+namespace App\Tests\Infrastructure\Adapter;
 
 use App\Domain\Exception\ServiceIsNotAccessible;
 use App\Domain\Exception\UserIsAlreadyInStorage;
@@ -58,56 +58,26 @@ abstract class UserProviderAndRepositoryTest extends TestCase
         $userRepository->add($user);
     }
 
-    /** @test */
-    public function an_exception_is_thrown_when_user_repository_is_unavailable_while_add_is_called(): void
+    /**
+     * @test
+     * @dataProvider createFailingScenarii
+     */
+    public function an_exception_is_thrown_when_a_service_is_not_available(callable $scenario): void
     {
         // EXPECT
         $this->expectException(ServiceIsNotAccessible::class);
 
         // GIVEN
-        $userRepository = $this->createUnavailableUserRepository();
-
+        $externalIdentifier = 'fake-identifier';
         $email = new Email('eddard.stark@winterfell.north');
-        $user = new UserToRegister(
-            'fake-identifier',
-            $email,
-            new PlainPassword('winterIsComing')
-        );
+        $password = new PlainPassword('winterIsComing');
+        $userToRegister = new UserToRegister($externalIdentifier, $email, $password);
 
         // WHEN
-        $userRepository->add($user);
+        $scenario($userToRegister);
     }
 
-    /** @test */
-    public function an_exception_is_thrown_when_user_provider_is_unavailable_while_isEmailAlreadyUsed_is_called(): void
-    {
-        // EXPECT
-        $this->expectException(ServiceIsNotAccessible::class);
-
-        // GIVEN
-        $userProvider = $this->createUnavailableUserProvider();
-
-        $email = new Email('eddard.stark@winterfell.north');
-
-        // WHEN
-        $userProvider->isEmailAlreadyUsed($email);
-    }
-
-    /** @test */
-    public function an_exception_is_thrown_when_user_provider_is_unavailable_while_getByEmail_is_called(): void
-    {
-        // EXPECT
-        $this->expectException(ServiceIsNotAccessible::class);
-
-        // GIVEN
-        $userProvider = $this->createUnavailableUserProvider();
-
-        $email = new Email('eddard.stark@winterfell.north');
-
-        // WHEN
-        $userProvider->getByEmail($email);
-    }
-
+    abstract public function createFailingScenarii(): \Generator;
     abstract protected function createUserRepository(): UserRepository;
     abstract protected function createUnavailableUserRepository(): UserRepository;
     abstract protected function createUserProvider(): UserProvider;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\Domain\Adapter\Fake;
+namespace App\Tests\Infrastructure\Adapter\Fake;
 
 use App\Domain\Exception\ServiceIsNotAccessible;
 use App\Domain\Port\IdentifierGenerator;
