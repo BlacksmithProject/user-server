@@ -1,0 +1,46 @@
+services:
+#  db:
+#    image: mysql:5.7.13
+#    restart: always
+#    environment:
+#      MYSQL_USER: ned
+#      MYSQL_PASSWORD: stark
+#      MYSQL_ROOT_PASSWORD: root
+#    ports:
+#      - '3307:3306'
+#    volumes:
+#      - ./mysql:/var/lib/mysql
+#    networks:
+#      - symfony
+
+  php:
+    container_name: php
+    build:
+      context: ./
+      target: php
+    ports:
+      - 9003:9003
+    volumes:
+      - .:/var/www/html/
+    environment:
+      - XDEBUG_SESSION=PHPSTORM
+#    depends_on:
+#      - db
+    networks:
+      - symfony
+
+  nginx:
+    container_name: nginx
+    image: bitnami/nginx:1.19-debian-10
+    ports:
+      - 8383:8080
+    volumes:
+      - ./docker/app.conf:/opt/bitnami/nginx/conf/server_blocks/app.conf
+      - .:/var/www/html/
+    depends_on:
+      - php
+    networks:
+      - symfony
+
+networks:
+  symfony:
