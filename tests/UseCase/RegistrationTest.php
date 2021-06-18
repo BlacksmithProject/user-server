@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\Domain\UseCase;
+namespace App\Tests\UseCase;
 
 use App\Domain\Exception\CannotRegisterUser;
 use App\Domain\Exception\ServiceIsNotAccessible;
 use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\PlainPassword;
-use App\Tests\Infrastructure\Adapter\Fake\FakeIdentifierGenerator;
-use App\Tests\Infrastructure\Adapter\Fake\FakeUserProvider;
-use App\Tests\Infrastructure\Adapter\Fake\FakeUserRepository;
+use App\Tests\Unit\Adapter\Fake\FakeIdentifierGenerator;
+use App\Tests\Unit\Adapter\Fake\FakeUserProvider;
+use App\Tests\Unit\Adapter\Fake\FakeUserRepository;
 use App\UseCase\Registration;
 use PHPUnit\Framework\TestCase;
 
@@ -53,9 +53,9 @@ final class RegistrationTest extends TestCase
         // GIVEN
         $email = new Email('robb.stark@winterfell.north');
         $password = new PlainPassword('winterIsComing');
+        $this->registration->register($email, $password);
 
         // WHEN
-        $this->registration->register($email, $password);
         $this->registration->register($email, $password);
     }
 

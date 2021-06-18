@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\Infrastructure\Adapter;
+namespace App\Tests\Unit\Adapter;
 
 use App\Domain\Exception\ServiceIsNotAccessible;
 use App\Domain\Exception\UserIsAlreadyInStorage;

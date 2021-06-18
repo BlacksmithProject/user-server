@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\Infrastructure\Adapter;
+namespace App\Tests\Unit\Adapter;
 
 use App\Domain\Model\UserToRegister;
 use App\Domain\Port\UserProvider;
 use App\Domain\Port\UserRepository;
 use App\Domain\ValueObject\Email;
-use App\Tests\Infrastructure\Adapter\Fake\FakeUserProvider;
-use App\Tests\Infrastructure\Adapter\Fake\FakeUserRepository;
+use App\Tests\Unit\Adapter\Fake\FakeUserProvider;
+use App\Tests\Unit\Adapter\Fake\FakeUserRepository;
 
 final class FakeUserProviderAndRepositoryTest extends UserProviderAndRepositoryTest
 {
