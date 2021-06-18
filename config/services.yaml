@@ -4,3 +4,18 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+
+    App\Infrastructure\Http\:
+        resource: '../src/Infrastructure/Http/'
+        tags: ['controller.service_arguments']
+
+    App\UseCase\Registration:
+
+    App\Infrastructure\Adapter\MysqlUserProvider: ~
+    App\Domain\Port\UserProvider: '@App\Infrastructure\Adapter\MysqlUserProvider'
+
+    App\Infrastructure\Adapter\MysqlUserRepository: ~
+    App\Domain\Port\UserRepository: '@App\Infrastructure\Adapter\MysqlUserRepository'
+
+    App\Infrastructure\Adapter\UuidGenerator: ~
+    App\Domain\Port\IdentifierGenerator: '@App\Infrastructure\Adapter\UuidGenerator'

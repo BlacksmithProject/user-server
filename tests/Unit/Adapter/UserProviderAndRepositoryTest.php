@@ -77,7 +77,33 @@ abstract class UserProviderAndRepositoryTest extends TestCase
         $scenario($userToRegister);
     }
 
-    abstract public function createFailingScenarii(): \Generator;
+    public function createFailingScenarii(): \Generator
+    {
+        yield "Unavailable UserRepository" => [
+            function (UserToRegister $userToRegister) {
+                $userRepository = $this->createUnavailableUserRepository();
+
+                $userRepository->add($userToRegister);
+            },
+        ];
+
+        yield "Unavailable UserProvider while isEmailAlreadyUsed is called" => [
+            function (UserToRegister $userToRegister) {
+                $userProvider = $this->createUnavailableUserProvider();
+
+                $userProvider->isEmailAlreadyUsed(new Email($userToRegister->email()));
+            },
+        ];
+
+        yield "Unavailable UserProvider while getByEmail is called" => [
+            function (UserToRegister $userToRegister) {
+                $userProvider = $this->createUnavailableUserProvider();
+
+                $userProvider->getByEmail(new Email($userToRegister->email()));
+            },
+        ];
+    }
+
     abstract protected function createUserRepository(): UserRepository;
     abstract protected function createUnavailableUserRepository(): UserRepository;
     abstract protected function createUserProvider(): UserProvider;

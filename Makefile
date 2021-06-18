@@ -1,4 +1,4 @@
-dev-from-scratch: start composer #database database-test
+dev-from-scratch: start composer database database-test
 
 start:
 	docker-compose up -d
@@ -10,15 +10,15 @@ composer:
 	docker exec -it php -r| rm -rf ./vendor
 	docker exec -it php composer install
 
-#database:
-#	docker exec -it php bin/console d:d:d --force
-#	docker exec -it php bin/console d:d:c
-#	docker exec -it php bin/console d:m:m --no-interaction
-#
-#database-test:
-#	docker exec -it -e APP_ENV=test php bin/console d:d:d --force
-#	docker exec -it -e APP_ENV=test php bin/console d:d:c
-#	docker exec -it -e APP_ENV=test php bin/console d:m:m --no-interaction
+database:
+	docker exec -it php bin/console d:d:d --force
+	docker exec -it php bin/console d:d:c
+	docker exec -it php bin/console d:m:m --no-interaction
+
+database-test:
+	docker exec -it -e APP_ENV=test php bin/console d:d:d --force
+	docker exec -it -e APP_ENV=test php bin/console d:d:c
+	docker exec -it -e APP_ENV=test php bin/console d:m:m --no-interaction
 
 phpcs:
 	docker exec -it php ./vendor/bin/phpcs

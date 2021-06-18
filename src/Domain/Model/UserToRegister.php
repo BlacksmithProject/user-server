@@ -12,6 +12,8 @@ final class UserToRegister
     private string $externalIdentifier;
     private Email $email;
     private string $encodedPassword;
+    private \DateTimeImmutable $createdAt;
+    private \DateTimeImmutable $updatedAt;
 
     /**
      * @throws FailedToEncodePassword
@@ -30,6 +32,10 @@ final class UserToRegister
         }
 
         $this->encodedPassword = $encodedPassword;
+
+        $now = new \DateTimeImmutable();
+        $this->createdAt = $now;
+        $this->updatedAt = $now;
     }
 
     public function externalIdentifier(): string
@@ -45,5 +51,15 @@ final class UserToRegister
     public function password(): string
     {
         return $this->encodedPassword;
+    }
+
+    public function createdAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function updatedAt(): \DateTimeImmutable
+    {
+        return $this->updatedAt;
     }
 }
