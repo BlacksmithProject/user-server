@@ -1,17 +1,15 @@
 services:
-#  db:
-#    image: mysql:5.7.13
-#    restart: always
-#    environment:
-#      MYSQL_USER: ned
-#      MYSQL_PASSWORD: stark
-#      MYSQL_ROOT_PASSWORD: root
-#    ports:
-#      - '3307:3306'
-#    volumes:
-#      - ./mysql:/var/lib/mysql
-#    networks:
-#      - symfony
+  db:
+    image: mysql:5.7.13
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '3307:3306'
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - symfony
 
   php:
     container_name: php
@@ -24,8 +22,8 @@ services:
       - .:/var/www/html/
     environment:
       - XDEBUG_SESSION=PHPSTORM
-#    depends_on:
-#      - db
+    depends_on:
+      - db
     networks:
       - symfony
 

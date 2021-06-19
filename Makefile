@@ -1,4 +1,4 @@
-dev-from-scratch: start composer #database database-test
+dev-from-scratch: start composer database database-test
 
 start:
 	docker-compose up -d
@@ -10,15 +10,15 @@ composer:
 	docker exec -it php -r| rm -rf ./vendor
 	docker exec -it php composer install
 
-#database:
-#	docker exec -it php bin/console d:d:d --force
-#	docker exec -it php bin/console d:d:c
-#	docker exec -it php bin/console d:m:m --no-interaction
-#
-#database-test:
-#	docker exec -it -e APP_ENV=test php bin/console d:d:d --force
-#	docker exec -it -e APP_ENV=test php bin/console d:d:c
-#	docker exec -it -e APP_ENV=test php bin/console d:m:m --no-interaction
+database:
+	docker exec -it php bin/console d:d:d --force
+	docker exec -it php bin/console d:d:c
+	docker exec -it php bin/console d:m:m --no-interaction
+
+database-test:
+	docker exec -it -e APP_ENV=test php bin/console d:d:d --force
+	docker exec -it -e APP_ENV=test php bin/console d:d:c
+	docker exec -it -e APP_ENV=test php bin/console d:m:m --no-interaction
 
 phpcs:
 	docker exec -it php ./vendor/bin/phpcs
@@ -33,7 +33,7 @@ test:
 	docker exec -it php ./vendor/bin/phpunit --color tests
 
 infection:
-	docker exec -it php ./vendor/bin/infection --threads=4
+	docker exec -it -e XDEBUG_MODE=coverage php ./vendor/bin/infection --threads=4
 
 test-CI:
 	docker exec -it php ./vendor/bin/phpunit --coverage-clover=coverage.clover
@@ -45,4 +45,4 @@ ALL: phpcs psalm test infection
 release:
 	git add CHANGELOG.md && git commit -m "release($(VERSION))" && git tag $(VERSION) && git push && git push --tags
 
-.PHONY: dev-from-scratch start stop composer phpcs phpcs-fix psalm test infection test-CI CI ALL release #database database-test
+.PHONY: dev-from-scratch start stop composer phpcs phpcs-fix psalm test infection test-CI CI ALL release database database-test

@@ -2,7 +2,14 @@
     "source": {
         "directories": [
             "src"
+        ],
+        "excludes": [
+            "Kernel.php",
+            "Domain\/Exception"
         ]
+    },
+    "logs": {
+        "text": "infection.log"
     },
     "mutators": {
         "@default": true

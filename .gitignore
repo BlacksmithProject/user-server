@@ -17,3 +17,11 @@
 /.phpcs-cache
 /phpcs.xml
 ###< squizlabs/php_codesniffer ###
+
+###> infection/infection ###
+infection.log
+###< infection/infection ###
+
+###> MySQL ###
+/mysql
+###< MySQL ###
