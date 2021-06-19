@@ -1,0 +1,19 @@
+imports:
+    - { resource: services.yaml }
+
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    App\Tests\Unit\Adapter\Fake\FakeUserProvider:
+    App\Domain\Port\UserProvider: '@App\Tests\Unit\Adapter\Fake\FakeUserProvider'
+
+    App\Tests\Unit\Adapter\Fake\FakeUserRepository:
+    App\Domain\Port\UserRepository: '@App\Tests\Unit\Adapter\Fake\FakeUserRepository'
+
+    App\Tests\Unit\Adapter\Fake\FakeIdentifierGenerator: ~
+    App\Domain\Port\IdentifierGenerator: '@App\Tests\Unit\Adapter\Fake\FakeIdentifierGenerator'

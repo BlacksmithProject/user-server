@@ -7,8 +7,7 @@ use App\Domain\ValueObject\PlainPassword;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -25,8 +24,9 @@ final class RegistrationEndpointConstraintRecipe implements ConstraintRecipe
                 'password' => [
                     new NotNull(),
                     new Type('string'),
-                    new NotBlank(),
-                    new GreaterThan(PlainPassword::MINIMUM_LENGTH),
+                    new Length([
+                        'min' => PlainPassword::MINIMUM_LENGTH,
+                    ]),
                 ],
             ],
         ]);

@@ -38,23 +38,21 @@ final class Registration
      */
     public function register(Email $email, PlainPassword $plainPassword): RegisteredUser
     {
-        if ($this->userProvider->isEmailAlreadyUsed($email)) {
-            throw CannotRegisterUser::becauseEmailIsAlreadyUsed($email->value());
-        }
-
         try {
+            if ($this->userProvider->isEmailAlreadyUsed($email)) {
+                throw CannotRegisterUser::becauseEmailIsAlreadyUsed($email->value());
+            }
+
             $userToRegister = new UserToRegister($this->identifierGenerator->generate(), $email, $plainPassword);
-        } catch (FailedToEncodePassword $failedToEncodePassword) {
-            throw CannotRegisterUser::becausePasswordFailedToBeEncoded();
-        }
+            $this->userRepository->add($userToRegister);
 
-        $this->userRepository->add($userToRegister);
-
-        try {
             return $this->userProvider->getByEmail($email);
+        } catch (FailedToEncodePassword $exception) {
+            throw CannotRegisterUser::becausePasswordFailedToBeEncoded();
+        } catch (UserIsAlreadyInStorage $exception) {
+            throw new ServiceIsNotAccessible(UserRepository::class); // should never happen, since we verified it before.
         } catch (UserNotFound $exception) {
-            // should never happen, since we added user just before.
-            throw new ServiceIsNotAccessible(UserProvider::class);
+            throw new ServiceIsNotAccessible(UserProvider::class); // should never happen, since we added user just before.
         }
     }
 }
