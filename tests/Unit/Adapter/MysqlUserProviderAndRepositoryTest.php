@@ -7,20 +7,20 @@ use App\Domain\Port\UserProvider;
 use App\Domain\Port\UserRepository;
 use App\Infrastructure\Adapter\MysqlUserProvider;
 use App\Infrastructure\Adapter\MysqlUserRepository;
-use Doctrine\DBAL\Configuration;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\PDO\MySQL\Driver;
+use App\Tests\Helper\TestConnectionProvider;
 
 final class MysqlUserProviderAndRepositoryTest extends UserProviderAndRepositoryTest
 {
+    use TestConnectionProvider;
+
     protected function setUp(): void
     {
-        $this->getConnection()->executeQuery('TRUNCATE users');
+        $this->getTestConnection()->executeQuery('TRUNCATE users');
     }
 
     protected function createUserRepository(): UserRepository
     {
-        return new MysqlUserRepository($this->getConnection());
+        return new MysqlUserRepository($this->getTestConnection());
     }
 
     protected function createUnavailableUserRepository(): UserRepository
@@ -30,35 +30,11 @@ final class MysqlUserProviderAndRepositoryTest extends UserProviderAndRepository
 
     protected function createUserProvider(): UserProvider
     {
-        return new MysqlUserProvider($this->getConnection());
+        return new MysqlUserProvider($this->getTestConnection());
     }
 
     protected function createUnavailableUserProvider(): UserProvider
     {
         return new MysqlUserProvider($this->getWrongConnection());
-    }
-
-    private function getConnection(): Connection
-    {
-        return new Connection(
-            [
-                'dbname' => 'user_server',
-                'user' => 'root',
-                'password' => 'root',
-                'host' => 'db:3306',
-                'driver' => 'pdo_mysql',
-            ],
-            new Driver(),
-            new Configuration()
-        );
-    }
-
-    private function getWrongConnection(): Connection
-    {
-        return new Connection(
-            [],
-            new Driver(),
-            new Configuration()
-        );
     }
 }

@@ -7,7 +7,7 @@ use App\Domain\Exception\ServiceIsNotAccessible;
 use App\Domain\Exception\UserIsAlreadyInStorage;
 use App\Domain\Model\UserToRegister;
 use App\Domain\Port\UserRepository;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Exception;
 
 final class MysqlUserRepository implements UserRepository

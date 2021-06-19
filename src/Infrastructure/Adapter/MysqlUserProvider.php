@@ -8,7 +8,7 @@ use App\Domain\Exception\UserNotFound;
 use App\Domain\Port\UserProvider;
 use App\Domain\ReadModel\RegisteredUser;
 use App\Domain\ValueObject\Email;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Driver\Exception as DriverException;
 use Doctrine\DBAL\Exception;
 
