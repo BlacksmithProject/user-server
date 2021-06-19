@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\UseCase;
+namespace App\Domain\UseCase;
 
 use App\Domain\Exception\CannotRegisterUser;
 use App\Domain\Exception\FailedToEncodePassword;
 use App\Domain\Exception\ServiceIsNotAccessible;
+use App\Domain\Exception\UserIsAlreadyInStorage;
 use App\Domain\Exception\UserNotFound;
 use App\Domain\Model\UserToRegister;
 use App\Domain\Port\IdentifierGenerator;

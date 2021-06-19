@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\UseCase;
+namespace App\Tests\Domain\UseCase;
 
 use App\Domain\Exception\CannotRegisterUser;
 use App\Domain\Exception\ServiceIsNotAccessible;
@@ -10,7 +10,7 @@ use App\Domain\ValueObject\PlainPassword;
 use App\Tests\Unit\Adapter\Fake\FakeIdentifierGenerator;
 use App\Tests\Unit\Adapter\Fake\FakeUserProvider;
 use App\Tests\Unit\Adapter\Fake\FakeUserRepository;
-use App\UseCase\Registration;
+use App\Domain\UseCase\Registration;
 use PHPUnit\Framework\TestCase;
 
 final class RegistrationTest extends TestCase

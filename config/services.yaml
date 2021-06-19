@@ -9,7 +9,7 @@ services:
         resource: '../src/Infrastructure/Http/'
         tags: ['controller.service_arguments']
 
-    App\UseCase\Registration:
+    App\Domain\UseCase\Registration:
 
     App\Infrastructure\Adapter\MysqlUserProvider: ~
     App\Domain\Port\UserProvider: '@App\Infrastructure\Adapter\MysqlUserProvider'
